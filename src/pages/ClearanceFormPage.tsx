@@ -114,9 +114,19 @@ const ClearanceFormPage = () => {
     const son = [
         "BS Nursing"
     ]
+    
+    const clearancePurposes = [
+      "Dropping Out",
+      "Request Transcript of Records (TOR)",
+      "Transferring",
+      "Issuance of Diploma",
+      "Cancellation of Enrollment"
+
+    ]
 
     const [currentSelectedSchool, setSelectedSchool] = useState(schoolList[0])
     const [currentProgramList, setCurrentProgramList] = useState<string[]>(soit)
+    const [currentPurposesList, setCurrentPurposesList] = useState(clearancePurposes[0])
 
     function updateProgramList(school: string) {
         switch(school) {
@@ -247,7 +257,22 @@ const ClearanceFormPage = () => {
             
             <div>
                 <label className={styles.formCard__label}>Purpose of Clearance</label>
-                <textarea className={styles.formCard__input} name="purposeOfClearance" rows={4} required/>
+                    <select 
+                    className={styles.formCard__input} 
+                    name="purposeOfClearance" 
+                    required 
+                    value={currentPurposesList}
+                    onChange={e => {
+                      const purpose = e.target.value
+                      setCurrentPurposesList(purpose)
+                    }} 
+                    >
+                      {
+                            clearancePurposes.map((purpose, index) => (
+                                <option key={index}>{purpose}</option>
+                            ))
+                        }
+                    </select>
             </div>
 
             <div className={styles.formActions}>
