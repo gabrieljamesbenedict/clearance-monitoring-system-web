@@ -3,6 +3,10 @@
     margin: 3rem auto;
 }
 
+.header {
+    font-size: 2rem;
+}
+
 .formCard {
     background-color: white;
     padding: 20px;
@@ -15,7 +19,7 @@
     font-weight: bold;
     margin-bottom: 0.25rem;
 
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .formCard__input {
