@@ -1,10 +1,15 @@
 export interface Clearance {
     clearanceId?: number,
-    studentName: string,
+    studentLastName: string,
+    studentFirstName: string,
+    studentMiddleName: string,
     studentNumber: number,
+    studentSchool: string,
     studentProgram: string,
+    academicYear: String,
+    semester: number
     purposeOfClearance: string,
-    date?: String
+    timestamp?: String
 }
 
 const BASE_URL: string = "http://localhost:8080/api"

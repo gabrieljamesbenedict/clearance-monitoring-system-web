@@ -10,10 +10,15 @@ const ClearanceFormPage = () => {
         const formData = new FormData(event.currentTarget);
 
         const clearanceData: Clearance = {
-            studentName: formData.get("studentName") as string,
+            studentLastName: formData.get("studentLastName") as string,
+            studentFirstName: formData.get("studentFirstName") as string,
+            studentMiddleName: formData.get("studentMiddleName") as string,
             studentNumber: Number(formData.get("studentNumber") as string),
+            studentSchool: formData.get("studentSchool") as string,
             studentProgram: formData.get("StudentProgram") as string,
-            purposeOfClearance: formData.get("purposeOfClearance") as string,
+            academicYear: formData.get("academicYear") as string,
+            semester: Number(formData.get("semester") as string),
+            purposeOfClearance: formData.get("purposeOfClearance") as string
         }
 
         createClearance(clearanceData);
@@ -104,21 +109,44 @@ const ClearanceFormPage = () => {
             <div className={styles.formCard__inputGroup}>
                 <div>
                     <label className={styles.formCard__label}>Last Name</label>
-                    <input className={styles.formCard__input} name="studentName" type="text" required/>
+                    <input className={styles.formCard__input} name="studentLastName" type="text" required/>
                 </div>
                 <div>
                     <label className={styles.formCard__label}>First Name</label>
-                    <input className={styles.formCard__input} name="studentName" type="text" required/>
+                    <input className={styles.formCard__input} name="studentFirstName" type="text" required/>
                 </div>
                 <div>
                     <label className={styles.formCard__label}>Middle Name</label>
-                    <input className={styles.formCard__input} name="studentName" type="text" required/>
+                    <input className={styles.formCard__input} name="studentMiddleName" type="text" required/>
                 </div>
             </div>
 
-            <div>
-                <label className={styles.formCard__label}>Student Number</label>
-                <input className={styles.formCard__input} name="studentNumber" type="number" required/>
+            <div className={styles.formCard__inputGroup}>
+                <div>
+                    <label className={styles.formCard__label}>Student Number</label>
+                    <input className={styles.formCard__input} name="studentNumber" type="number" required/>
+                </div>
+                <div>
+                    <label className={styles.formCard__label}>Academic Year</label>
+                    <select className={styles.formCard__input} name="academicYear" required>
+                        <option>AY 20-21</option>
+                        <option>AY 21-22</option>
+                        <option>AY 22-23</option>
+                        <option>AY 23-24</option>
+                        <option>AY 24-25</option>
+                        <option>AY 25-26</option>
+                        <option>AY 26-27</option>
+                    </select>
+                </div>
+                <div>
+                    <label className={styles.formCard__label}>Semester</label>
+                    <select className={styles.formCard__input} name="semester" required>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                    </select>
+                </div>
             </div>
 
             <div className={styles.formCard__inputGroup}>

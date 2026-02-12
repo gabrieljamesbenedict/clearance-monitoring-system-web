@@ -15,19 +15,16 @@ const DashboardPage = () => {
       <h1 className={styles.header}>Dashboard</h1>
       <table className={styles.clearanceTable}>
         <colgroup>
-          <col style={{ width: "5%" }}/>
-          <col style={{ width: "30%" }}/>
-          <col style={{ width: "15%" }}/>
-          <col style={{ width: "10%" }}/>
-          <col style={{ width: "auto" }}/>
-          <col/>
         </colgroup>
         <thead>
           <tr className={styles.clearanceTable__headerRow}>
             <th>ID</th>
             <th>Name</th>
             <th>Student Number</th>
+            <th>School</th>
             <th>Program</th>
+            <th>Academic Year</th>
+            <th>Semester</th>
             <th>Purpose of Clearance</th>
           </tr>
         </thead>
@@ -36,9 +33,12 @@ const DashboardPage = () => {
             clearanceList.map(clearance => (
                 <tr key={clearance.clearanceId}>
                   <td>{clearance.clearanceId}</td>
-                  <td>{clearance.studentName}</td>
+                  <td>{clearance.studentLastName + ' ' + clearance.studentFirstName + ' ' + clearance.studentMiddleName}</td>
                   <td>{clearance.studentNumber}</td>
+                  <td>{clearance.studentSchool}</td>
                   <td>{clearance.studentProgram}</td>
+                  <td>{clearance.academicYear}</td>
+                  <td>{clearance.semester}</td>
                   <td>{clearance.purposeOfClearance}</td>
                 </tr>
             ))

@@ -1,6 +1,6 @@
 .pageBody {
-    width: 90%;
-    margin: 3rem auto;
+    margin: 1rem;
+    box-sizing: border-box;
     /* background-color: cadetblue; */
 }
 
