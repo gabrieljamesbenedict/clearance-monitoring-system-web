@@ -1,0 +1,20 @@
+.pageBody {
+    margin: 1rem;
+    box-sizing: border-box;
+}
+
+.header {
+    font-size: 2rem;
+}
+
+.dashboardContainer {
+    width: 100%;
+    table-layout: auto;
+    overflow-wrap: break-word;
+    border-spacing: 0;
+
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}

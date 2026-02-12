@@ -12,7 +12,7 @@ const DashboardPage = () => {
   
   return (
     <div className={styles.pageBody}>
-      <h1 className={styles.header}>Dashboard</h1>
+      <h1 className={styles.header}>Clearance Records</h1>
       <table className={styles.clearanceTable}>
         <colgroup>
         </colgroup>

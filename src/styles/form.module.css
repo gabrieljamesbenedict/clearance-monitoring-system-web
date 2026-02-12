@@ -139,7 +139,7 @@
 .clearButton {
     background-color: #6c757d;
     color: white;
-    margin-right: 1rem;
+    margin-right: 0.75rem;
 }
 
 .clearButton:hover {
