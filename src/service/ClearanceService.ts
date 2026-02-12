@@ -4,7 +4,7 @@ export interface Clearance {
     studentNumber: number,
     studentProgram: string,
     purposeOfClearance: string,
-    date: String
+    date?: String
 }
 
 const BASE_URL: string = "http://localhost:8080/api"
@@ -13,7 +13,9 @@ export async function getAllClearances(): Promise<Clearance[]> {
     const res = await fetch(`${BASE_URL}/clearances`);
     if (!res.ok) {
         throw new Error(`Failed to fetch clearances: ${res.status}`);
-    } 
+    }  else {
+        console.log("Successful")
+    }
     return await res.json();
 }
 
@@ -21,7 +23,9 @@ export async function getClearanceById(id: number): Promise<Clearance> {
     const res = await fetch(`${BASE_URL}/clearances/${id}`);
     if (!res.ok) {
         throw new Error(`Failed to fetch clearance: ${res.status}`);
-    }  
+    }  else {
+        console.log("Successful")
+    }
     return await res.json();
 }
 
@@ -35,6 +39,8 @@ export async function createClearance(clearance: Clearance) {
     });
     if (!res.ok) {
         throw new Error(`Failed to create clearance: ${res.status} ${res.statusText}`);
+    }  else {
+        console.log("Successful")
     }
 }
 
@@ -48,6 +54,8 @@ export async function updateClearance(id: number, clearance: Clearance) {
     });
     if (!res.ok) {
         throw new Error(`Failed to update clearance: ${res.status} ${res.statusText}`);
+    }  else {
+        console.log("Successful")
     }
 }
 
@@ -57,5 +65,7 @@ export async function deleteClearance(id: number) {
     });
     if (!res.ok) {
         throw new Error(`Failed to update clearance: ${res.status} ${res.statusText}`);
+    }  else {
+        console.log("Successful")
     }
 }

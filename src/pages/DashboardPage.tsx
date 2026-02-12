@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from '../styles/dashboard.module.css'
+import { Clearance, getAllClearances } from '../service/ClearanceService.ts';
 
 const DashboardPage = () => {
+
+  const [ clearanceList, setClearanceList ] = useState<Clearance[]>([]);
+
+  useEffect(() => {
+    getAllClearances().then(clearances => setClearanceList(clearances))
+  }, [])
+
   return (
     <div className={styles.pageBody}>
       <h1 className={styles.header}>Dashboard</h1>
@@ -24,13 +32,17 @@ const DashboardPage = () => {
           </tr>
         </thead>
         <tbody>
-          {/* <tr className={styles.clearanceTable__row}>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
-            <td>test</td>
-          </tr> */}
+          {
+            clearanceList.map(clearance => (
+                <tr key={clearance.clearanceId}>
+                  <td>{clearance.clearanceId}</td>
+                  <td>{clearance.studentName}</td>
+                  <td>{clearance.studentNumber}</td>
+                  <td>{clearance.studentProgram}</td>
+                  <td>{clearance.purposeOfClearance}</td>
+                </tr>
+            ))
+          }
         </tbody>
       </table>
     </div>
