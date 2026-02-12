@@ -1,0 +1,53 @@
+.pageBody {
+    width: 90%;
+    margin: 3rem auto;
+    /* background-color: cadetblue; */
+}
+
+.header {
+    font-size: 2rem;
+}
+
+.clearanceTable {
+    width: 100%;
+    table-layout: auto;
+    overflow-wrap: break-word;
+    border-spacing: 0;
+
+    background-color: white;
+    padding: 0.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.clearanceTable__headerRow {
+    width: 100%;
+    background-color: #2d91fc;
+    box-sizing: border-box;
+
+    color: white;
+}
+
+.clearanceTable__row {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.clearanceTable__row:hover {
+    width: 100%;
+    box-sizing: border-box;
+    
+    background-color: #f1f1f1;
+}
+
+.clearanceTable th {
+    margin: 0;
+    padding: 0.75rem;
+    text-align: left;
+}
+
+.clearanceTable td {
+    margin: 0;
+    padding: 0.5rem;
+    text-align: left;
+}
