@@ -14,8 +14,20 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.formCard__inputGroup {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+    display: flex;
+    gap: 0.5rem;
+}
+
+.formCard__inputGroup * {
+    flex: 1 1 0;
+}
+
 .formCard__label {
-    display: block;
     font-weight: bold;
     margin-bottom: 0.25rem;
 
@@ -23,7 +35,6 @@
 }
 
 .formCard__input {
-    display: block;
     border: 1px solid #ddd;
     border-radius: 4px;
     box-sizing: border-box;
@@ -37,7 +48,6 @@
 }
 
 .formCard__submit {
-    display: block;
     width: 100%;
     background-color: #2d91fc;
     color: white;

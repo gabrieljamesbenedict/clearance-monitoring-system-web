@@ -9,7 +9,7 @@ const DashboardPage = () => {
   useEffect(() => {
     getAllClearances().then(clearances => setClearanceList(clearances))
   }, [])
-
+  
   return (
     <div className={styles.pageBody}>
       <h1 className={styles.header}>Dashboard</h1>
