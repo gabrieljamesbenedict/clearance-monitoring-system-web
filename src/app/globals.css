@@ -1,31 +1,15 @@
 @import "tailwindcss";
 
 :root {
-
-  /* Primary (Bright Red) */
   --primary: #C8102E;
-  --primary-hover: #A60D25;
-
-  /* Secondary (Black System) */
   --secondary: #000000;
-  --secondary-light: #121212;
+  --accent: #FFC72C;
+  --accent-hover: #E6B800;
 
-  /* Gold / Yellow Accents */
-  --accent-gold: #FFC72C;       /* bright institutional gold */
-  --accent-gold-hover: #E6B800; 
-  --accent-yellow-soft: #FFF3C4;
+  --bg-main: #FFFFFF;
+  --bg-card: #F5F5F5;
 
-  /* Backgrounds */
-  --bg-main: #0A0A0A;
-  --bg-card: #1E1E1E;
-
-  /* Text */
-  --text-primary: #FFFFFF;
-  --text-secondary: #E0E0E0;
-  --text-muted: #A0A0A0;
-  --text-on-gold: #000000;
-
-  /* Border */
-  --border: #333333;
-
+  --text-primary: #111111;
+  --text-secondary: #333333;
+  --text-muted: #666666;
 }
