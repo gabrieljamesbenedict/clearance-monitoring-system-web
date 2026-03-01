@@ -10,6 +10,11 @@ export interface User {
   role: Role;
 }
 
+export interface LoginRequest {
+    email: string;
+    password: string;
+}
+
 export const me = async (): Promise<User>  => {
     const res = await fetch("http://localhost:8080/api/auth/me", {
         method: "POST",
@@ -21,5 +26,25 @@ export const me = async (): Promise<User>  => {
         throw new Error(`Request failed: ${res.status}`);
     }
     
+    return await res.json();
+}
+
+export const login = async (request: LoginRequest) => {
+
+    const formBody: URLSearchParams = new URLSearchParams();
+    formBody.append("email", request.email);
+    formBody.append("password", request.password);
+
+    const res = await fetch("http://localhost:8080/api/auth/login", {
+        method: "POST",
+        credentials: "include",
+        headers: {"Content-Type": "application/x-www-form-urlencoded"},
+        body: formBody.toString()
+    });
+
+    if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`);
+    }
+
     return await res.json();
 }
