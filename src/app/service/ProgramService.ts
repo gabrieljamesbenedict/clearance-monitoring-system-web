@@ -1,5 +1,6 @@
 export interface Program {
     programId: number;
+    schoolId: number;
     name: string;
     description: string;
 }
