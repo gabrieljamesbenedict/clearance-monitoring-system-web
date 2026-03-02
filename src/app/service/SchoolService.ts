@@ -4,7 +4,7 @@ export interface School {
     description: string;
 }
 
-export const getAll = async (id: number): Promise<School[]> => {
+export const getAll = async (): Promise<School[]> => {
     const res = await fetch(`http://localhost:8080/api/schools`, {
         method: "GET",
         credentials: "include",
