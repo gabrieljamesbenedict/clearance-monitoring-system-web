@@ -42,8 +42,12 @@ export const login = async (request: LoginRequest) => {
         body: formBody.toString()
     });
 
-    if (!res.ok) {
-        throw new Error(`Request failed: ${res.status}`);
+    if (res.status === 401) {
+        throw new Error("Invalid Email or Password");
+    }
+
+    if (res.status === 500) {
+        throw new Error("Server Error");
     }
 
     return await res.json();
