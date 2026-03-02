@@ -1,4 +1,3 @@
-// Role enum matching your Java Role enum
 export type Role = 'STUDENT' | 'EMPLOYEE';
 
 export interface User {
