@@ -1,6 +1,8 @@
+import { School } from "./SchoolService";
+
 export interface Program {
     programId: number;
-    schoolId: number;
+    school: School;
     name: string;
     description: string;
 }
