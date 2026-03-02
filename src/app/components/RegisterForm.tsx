@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import Input from './Input';
 import InputRowContainer from './InputRowContainer';
@@ -10,18 +10,6 @@ import { getAll as getAllSchools, School } from '../service/SchoolService';
 import { getAll as getAllPrograms, Program } from '../service/ProgramService';
 
 const RegisterForm = () => {
-
-// export interface StudentRegistrationRequest {
-//     lastname: string;
-//     firstname: string;
-//     middlename: string;
-//     email: string;
-//     password: string;
-//     studentNumber: string;
-//     schoolId: number;
-//     programId: number;
-// }
-
 
     const [lastname, setLastName] = useState("");
     const [firstname, setFirstName] = useState("");
@@ -33,9 +21,24 @@ const RegisterForm = () => {
     const [schoolId, setSchoolId] = useState(-1);
     const [programId, setProgramId] = useState(-1);
 
+    const [schoolList, setSchoolList] = useState<School[]>([]);
+    const [ProgramList, setProgramList] = useState<Program[]>([]);
+
     const [error, setError] = useState<string | null>(null);
 
     const router = useRouter();
+
+    useEffect(() => {
+        getAllSchools().then(result => {
+            setSchoolList(result)
+        });
+    }, []);
+
+    useEffect(() => {
+        getAllPrograms().then(result => {
+            setProgramList(result)
+        });
+    }, []);
 
     async function handleSubmit(e: React.FormEvent) {
 
