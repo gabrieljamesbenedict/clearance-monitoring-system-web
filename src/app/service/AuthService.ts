@@ -58,17 +58,17 @@ export const login = async (request: LoginRequest) => {
         body: formBody.toString()
     });
 
+    const data = await res.json();
+
     if (res.ok) {
-        return await res.json();
+        return data;
     }
 
-    if (res.status === 401) {
-        throw new AuthError("Invalid Email or Password");
+    if (res.status >= 500 && res.status < 600) {
+        throw new Error("Internal Server Error");
     }
 
-    if (res.status === 500) {
-        throw new AuthError("Server Error");
-    }
+    throw new AuthError(data.message);
 }
 
 export const registerStudent = async (request: StudentRegistrationRequest) => {
@@ -77,14 +77,18 @@ export const registerStudent = async (request: StudentRegistrationRequest) => {
         method: "POST",
         credentials: "include",
         headers: {"Content-Type": "application/json"},
-        body: request.toString()
+        body: JSON.stringify(request)
     });
 
+    const data = await res.json();
+
     if (res.ok) {
-        return await res.json();
+        return await data;
     }
 
-    if (res.status === 500) {
-        throw new AuthError("Server Error");
+    if (res.status >= 500 && res.status < 600) {
+        throw new AuthError("Internal Server Error");
     }
+    
+    throw new Error(data.message);
 }
