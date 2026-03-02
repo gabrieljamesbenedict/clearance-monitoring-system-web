@@ -29,6 +29,12 @@ export const me = async (): Promise<User>  => {
     return await res.json();
 }
 
+export class AuthError extends Error {
+    constructor(m: string) {
+        super(m);
+    }
+}
+
 export const login = async (request: LoginRequest) => {
 
     const formBody: URLSearchParams = new URLSearchParams();
@@ -43,11 +49,11 @@ export const login = async (request: LoginRequest) => {
     });
 
     if (res.status === 401) {
-        throw new Error("Invalid Email or Password");
+        throw new AuthError("Invalid Email or Password");
     }
 
     if (res.status === 500) {
-        throw new Error("Server Error");
+        throw new AuthError("Server Error");
     }
 
     return await res.json();

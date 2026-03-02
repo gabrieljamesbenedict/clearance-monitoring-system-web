@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import Input from './Input'
 import Submit from './Submit'
-import { login } from '../service/AuthService'
+import { AuthError, login } from '../service/AuthService'
+import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
 
@@ -11,16 +12,25 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState<string | null>(null);
 
+    const router = useRouter();
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
         try {
-            setError(null)
-            const user = await login({ email, password })
-            console.log('Logged in user:', user)
-        } catch (err: any) {
-            setError(err.message)
-            console.error('Login failed:', err)
+            setError(null);
+
+            const user = await login({ email, password });
+            router.push('/');
+        } catch (err: unknown) {
+
+            if (err instanceof AuthError) {
+                setError(err.message);
+                return;
+            }
+
+            setError("Unexpected error occurred");
+            console.error("Unknown error type:", err);
         }
 
     }
