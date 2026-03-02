@@ -7,10 +7,14 @@ export function proxy (request: NextRequest) {
     const cookie = request.headers.get("JSESSIONID");
     const url = request.nextUrl.clone();
 
-    const publicPaths = ["/login", "/signup"];
+    const publicPaths = ["/login", "/register"];
     const protectedPaths = ["/dashboard", "/form", "/admin"];
 
-    const pathname = request.nextUrl.pathname;
+    let pathname = request.nextUrl.pathname;
+
+    if (pathname === "/") {
+        pathname = "/dashboard";
+    }
 
     if (cookie && publicPaths.some(path => pathname.startsWith(path))) {
         url.pathname = "/dashboard";
