@@ -15,6 +15,17 @@ export interface LoginRequest {
     password: string;
 }
 
+export interface StudentRegistrationRequest {
+    lastname: string;
+    firstname: string;
+    middlename: string;
+    email: string;
+    password: string;
+    studentNumber: string;
+    schoolId: number;
+    programId: number;
+}
+
 export const me = async (): Promise<User>  => {
     const res = await fetch("http://localhost:8080/api/auth/me", {
         method: "POST",
@@ -48,6 +59,10 @@ export const login = async (request: LoginRequest) => {
         body: formBody.toString()
     });
 
+    if (res.ok) {
+        return await res.json();
+    }
+
     if (res.status === 401) {
         throw new AuthError("Invalid Email or Password");
     }
@@ -55,6 +70,22 @@ export const login = async (request: LoginRequest) => {
     if (res.status === 500) {
         throw new AuthError("Server Error");
     }
+}
 
-    return await res.json();
+export const registerStudent = async (request: StudentRegistrationRequest) => {
+
+    const res = await fetch("http://localhost:8080/api/auth/register/student", {
+        method: "POST",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+        body: request.toString()
+    });
+
+    if (res.ok) {
+        return await res.json();
+    }
+
+    if (res.status === 500) {
+        throw new AuthError("Server Error");
+    }
 }
