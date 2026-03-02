@@ -20,16 +20,14 @@ const LoginForm = () => {
 
         try {
             setError(null);
-
             const user = await login({ email, password });
+            alert("Login Successful");
             router.push('/');
         } catch (err: unknown) {
-
             if (err instanceof AuthError) {
                 setError(err.message);
                 return;
             }
-
             setError("Unexpected error occurred");
             console.error("Unknown error type:", err);
         }
