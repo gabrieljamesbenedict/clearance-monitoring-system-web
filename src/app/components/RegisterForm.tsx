@@ -8,6 +8,7 @@ import Select from '../components/Select'
 import Submit from './Submit';
 import { getAll as getAllSchools, School } from '../service/SchoolService';
 import { getAll as getAllPrograms, Program } from '../service/ProgramService';
+import { StudentRegistrationRequest, registerStudent } from '../service/AuthService';
 
 const RegisterForm = () => {
 
@@ -23,6 +24,17 @@ const RegisterForm = () => {
 
     const [schoolList, setSchoolList] = useState<School[]>([]);
     const [ProgramList, setProgramList] = useState<Program[]>([]);
+
+    const [request, setRequest] = useState<StudentRegistrationRequest>({
+        lastname: "",
+        firstname: "",
+        middlename: "",
+        email: "",
+        password: "",
+        studentNumber: "",
+        schoolId: 0,
+        programId: 0,
+    });
 
     const [error, setError] = useState<string | null>(null);
 
@@ -47,12 +59,32 @@ const RegisterForm = () => {
         });
     }, [chosenSchool]);
 
+    
+    useEffect(() => {
+        let request: StudentRegistrationRequest = {
+            lastname: lastname,
+            firstname: firstname,
+            middlename: middlename,
+            email: email,
+            password: password,
+            studentNumber: studentNumber,
+            schoolId: chosenSchool!,
+            programId: chosenProgram!,
+        };
+        setRequest(request);
+    }, [lastname, firstname, middlename, email, password, studentNumber, chosenSchool, chosenProgram]);
+
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
-
-            alert(
-                `Last Name: ${lastname}\nFirst Name: ${firstname}\nMiddle Name: ${middlename}\nEmail: ${email}\nStudent Number: ${studentNumber}\nPassword: ${password}\nChosen School ID: ${chosenSchool}\nChosen Program ID: ${chosenProgram}`
-            );
+        setError(null);
+        registerStudent(request)
+            .then(result => {
+                alert("Register Successul");
+                router.push("/login");
+            })
+            .catch((err: any) => {
+                setError(err.message);
+            });
     }
 
     return (
@@ -125,6 +157,7 @@ const RegisterForm = () => {
                 onChange={(e: any) => setConfirmPassword(e.target.value)}
             />
             <Submit />
+            <label className="text-center text-orange-500">{error}</label>
         </form>
     )
 }
