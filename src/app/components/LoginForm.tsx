@@ -8,8 +8,9 @@ import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    
     const [error, setError] = useState<string | null>(null);
 
     const router = useRouter();
