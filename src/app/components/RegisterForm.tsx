@@ -18,8 +18,8 @@ const RegisterForm = () => {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [studentNumber, setStudentNumber] = useState("");
-    const [schoolId, setSchoolId] = useState(-1);
-    const [programId, setProgramId] = useState(-1);
+    const [chosenSchool, setChosenSchool] = useState<number | null>(-1);
+    const [chosenProgram, setChosenProgram] = useState<number | null>(-1);
 
     const [schoolList, setSchoolList] = useState<School[]>([]);
     const [ProgramList, setProgramList] = useState<Program[]>([]);
@@ -36,12 +36,23 @@ const RegisterForm = () => {
 
     useEffect(() => {
         getAllPrograms().then(result => {
-            setProgramList(result)
+            const filteredResult: Program[] = [];
+            result.forEach(prog => {
+                if (prog.school.schoolId === chosenSchool) {
+                    filteredResult.push(prog);
+                }
+            });
+            // alert(filteredResult);
+            setProgramList(filteredResult);
         });
-    }, []);
+    }, [chosenSchool]);
 
     async function handleSubmit(e: React.FormEvent) {
+        e.preventDefault();
 
+            alert(
+                `Last Name: ${lastname}\nFirst Name: ${firstname}\nMiddle Name: ${middlename}\nEmail: ${email}\nStudent Number: ${studentNumber}\nPassword: ${password}\nChosen School ID: ${chosenSchool}\nChosen Program ID: ${chosenProgram}`
+            );
     }
 
     return (
@@ -82,10 +93,22 @@ const RegisterForm = () => {
                 />
             </InputRowContainer>
             <InputRowContainer>
-                <Select placeholder={"Select your school"}>
+                <Select placeholder={"Select your school"}
+                    value={chosenSchool}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const value = e.target.value;
+                        setChosenSchool(value ? Number(value) : null);
+                    }}
+                >
                     {schoolList.map(school => (<option key={school.schoolId} value={school.schoolId}>{school.name}</option>))}
                 </Select>
-                <Select placeholder={"Select your program"}>
+                <Select placeholder={"Select your program"}
+                    value={chosenProgram}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                        const value = e.target.value;
+                        setChosenProgram(value ? Number(value) : null);
+                    }}
+                >
                     {ProgramList.map(program => (<option key={program.programId} value={program.programId}>{program.name}</option>))}
                 </Select>
             </InputRowContainer>
