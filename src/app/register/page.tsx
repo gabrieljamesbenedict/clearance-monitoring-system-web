@@ -1,8 +1,15 @@
 import React from 'react'
+import Card from '../components/Card'
+import RegisterForm from '../components/RegisterForm'
+import BodyContent from '../components/BodyContent'
 
 const RegisterPage = () => {
   return (
-    <div>RegisterPage</div>
+    <BodyContent>
+      <Card>
+        <RegisterForm/>
+      </Card>
+    </BodyContent>
   )
 }
 

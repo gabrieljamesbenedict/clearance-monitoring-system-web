@@ -1,13 +1,16 @@
 import React from 'react'
 import LoginForm from '../components/LoginForm'
 import Card from '../components/Card'
+import BodyContent from '../components/BodyContent'
 
 const LoginPage = () => {
-
+  
   return (
-    <Card>
-      <LoginForm/>
-    </Card>
+    <BodyContent>
+      <Card>
+        <LoginForm/>
+      </Card>
+    </BodyContent>
   )
 }
 
