@@ -73,6 +73,13 @@ export const login = async (request: LoginRequest) => {
     throw new AuthError(data.message);
 }
 
+export const logout = async () => {
+    const res = await fetch("http://localhost:8080/api/auth/logout", {
+        method: "POST",
+        credentials: "include"
+    });
+}
+
 export const registerStudent = async (request: StudentRegistrationRequest) => {
 
     const res = await fetch("http://localhost:8080/api/auth/register/student", {

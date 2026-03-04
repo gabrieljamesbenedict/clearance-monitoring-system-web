@@ -22,7 +22,7 @@ const LoginForm = () => {
             setError(null);
             const user = await login({ email, password });
             alert("Login Successful");
-            router.push('/');
+            window.location.reload();
         } catch (err: unknown) {
             if (err instanceof AuthError) {
                 setError(err.message);
