@@ -7,6 +7,8 @@ export interface User {
   lastname: string;
   email: string;
   role: Role;
+  studentNumber?: string;
+  employeeNumber?: string;
 }
 
 export interface LoginRequest {
@@ -27,7 +29,7 @@ export interface StudentRegistrationRequest {
 
 export const me = async (): Promise<User>  => {
     const res = await fetch("http://localhost:8080/api/auth/me", {
-        method: "POST",
+        method: "GET",
         credentials: "include",
         headers: {"Content-Type": "application/json"}
     });
