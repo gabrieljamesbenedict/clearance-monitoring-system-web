@@ -24,6 +24,8 @@ const ClientDashboard = () => {
   const uncancellableStatus = [
     "CANCELLED", "COMPLETED", "REJECTED"
   ];
+  const editButtonActive = !!selectedRow && ![...uncancellableStatus, "APPROVED"].some(status => status === selectedRow.status)
+  const cancelButtonActive = !!selectedRow && !uncancellableStatus.some(status => status === selectedRow.status);
 
   useEffect(() => {
     me().then(
@@ -101,18 +103,17 @@ const ClientDashboard = () => {
               <PrimaryButton>New Clearance Request</PrimaryButton>
             </Link>
 
-            <PrimaryButton
-              active={!!selectedRow}
-              as={selectedRow ? Link : undefined}
-              href={selectedRow ? `/form?editing=${selectedRow.clearanceId}` : undefined}
-            >
-              Edit Clearance Request
-            </PrimaryButton>
+            {editButtonActive ? (
+              <Link href={`/form?editing=${selectedRow!.clearanceId}`}>
+                <PrimaryButton>Edit Clearance Request</PrimaryButton>
+              </Link>
+            ) : (
+              <PrimaryButton active={false}>Edit Clearance Request</PrimaryButton>
+            )}
             
             <PrimaryButton
-              active={!!selectedRow && !uncancellableStatus.some(status => status === selectedRow.status)}
-              as={selectedRow ? Link : undefined}
-              onClick={() => cancelClearance(selectedRow!)}
+              active={cancelButtonActive}
+              onClick={() => cancelButtonActive ? cancelClearance(selectedRow!) : {}}
             >
               Cancel Clearance Request
             </PrimaryButton>
@@ -140,7 +141,10 @@ const ClientDashboard = () => {
             </Select>
           </div>
 
-          <h2 className="text-xl">Filter</h2>
+          <div className="flex flex-col">
+            <h2 className="text-xl">Filter</h2>
+            <p>todo: do filter</p>
+          </div>
 
         </div>
       </div>
