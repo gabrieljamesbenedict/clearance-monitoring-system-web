@@ -9,8 +9,15 @@ export interface Clearance {
     deletedAt?: string;
 }
 
-const getAllStudentClearance = async (): Promise<Clearance[]> => {
-    const res = await fetch(`http://localhost:8080/api/clearances`, {
+export interface ClearanceUdpateRequest {
+    clearanceId: number;
+    academicYear: string;
+    semester: string;
+    status: string;
+}
+
+export const getAllStudentClearance = async (id: number): Promise<Clearance[]> => {
+    const res = await fetch(`http://localhost:8080/api/clearances?studentId=${id}`, {
         method: "GET",
         credentials: "include",
         headers: {"Content-Type": "application/json"}
@@ -23,7 +30,7 @@ const getAllStudentClearance = async (): Promise<Clearance[]> => {
     return await res.json();
 }
 
-const getStudentClearance = async (id: number): Promise<Clearance> => {
+export const getStudentClearance = async (id: number): Promise<Clearance> => {
     const res = await fetch(`http://localhost:8080/api/clearances/${id}`, {
         method: "GET",
         credentials: "include",
@@ -35,4 +42,17 @@ const getStudentClearance = async (id: number): Promise<Clearance> => {
     }
 
     return await res.json();
+}
+
+export const updateClearance = async (clearance: ClearanceUdpateRequest) => {
+    const res = await fetch(`http://localhost:8080/api/clearances`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(clearance)
+    });
+
+    if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`);
+    }
 }

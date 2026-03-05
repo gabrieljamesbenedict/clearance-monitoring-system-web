@@ -1,17 +1,19 @@
 "use client" // remove this in the future
 
 import React, { useEffect, useState } from 'react'
-import { Clearance } from '../service/ClearanceService';
+import { Clearance, ClearanceUdpateRequest, getAllStudentClearance, updateClearance } from '../service/ClearanceService';
+import { me, User } from '../service/AuthService';
 import ClearanceTable from '../components/ClearanceTable';
 import ClearanceTableRow from '../components/ClearanceTableRow';
 import PrimaryButton from '../components/PrimaryButton';
 import Link from 'next/link';
 import Input from '../components/Input';
-import { fakeClearances } from './fakeClearance';
 import Select from '../components/Select';
 
 
 const ClientDashboard = () => {
+
+  const [user, setUser] = useState<User | null>(null);
 
   const [selectedRow, setSelectedRow] = useState<Clearance | null>(null);
   const [clearanceList, setClearanceList] = useState<Clearance[]>([]);
@@ -20,21 +22,42 @@ const ClientDashboard = () => {
   const [sortByField, setSortByField] = useState<string | null>(null);
 
   useEffect(() => {
-    let clearanceListTemp: Clearance[] = (
-      searchValue ? 
-      fakeClearances.filter(clearance => clearance.purpose.toUpperCase().includes(searchValue.toUpperCase())) : 
-      [...fakeClearances]
+    
+    me().then(
+      user => {
+        getAllStudentClearance(user.userId).then(list => {
+          list = 
+            searchValue ? 
+            list.filter(clearance => clearance.purpose.toUpperCase().includes(searchValue.toUpperCase())) : 
+            [...list];
+          switch (sortByField) {
+            case "purpose": list.sort((a,b) => a.purpose.localeCompare(b.purpose));break;
+            case "academicYear": list.sort((a,b) => a.academicYear.localeCompare(b.academicYear));break;
+            case "semester": list.sort((a,b) => a.semester.localeCompare(b.semester));break;
+            case "createdAt": list.sort((a,b) => a.createdAt.localeCompare(b.createdAt));break;
+            case "status": list.sort((a,b) => a.status.localeCompare(b.status));break;
+            default: list.sort((a,b) => a.clearanceId - b.clearanceId);break;
+          }
+          setClearanceList(list);
+        });
+      }
     );
-    switch (sortByField) {
-      case "purpose": clearanceListTemp.sort((a,b) => a.purpose.localeCompare(b.purpose));break;
-      case "academicYear": clearanceListTemp.sort((a,b) => a.academicYear.localeCompare(b.academicYear));break;
-      case "semester": clearanceListTemp.sort((a,b) => a.semester.localeCompare(b.semester));break;
-      case "createdAt": clearanceListTemp.sort((a,b) => a.createdAt.localeCompare(b.createdAt));break;
-      case "status": clearanceListTemp.sort((a,b) => a.status.localeCompare(b.status));break;
-      default: clearanceListTemp.sort((a,b) => a.clearanceId - b.clearanceId);break;
-    }
-    setClearanceList(clearanceListTemp);
+
   },[searchValue, sortByField]);
+
+  function cancelClearance(clearance: Clearance) {
+    const confirmation = confirm("Are you sure you want to cancel this clearance request?");
+    if (confirmation && selectedRow) {
+      selectedRow.status = "CANCELLED";
+      const newClearance: ClearanceUdpateRequest = {
+        clearanceId: selectedRow.clearanceId,
+        academicYear: selectedRow.academicYear,
+        semester: selectedRow.semester,
+        status: selectedRow.status
+      };
+      updateClearance(newClearance).then();
+    }
+  }
 
   return (
     <div className="flex flex-col gap-4 px-12 py-4">
@@ -83,7 +106,7 @@ const ClientDashboard = () => {
             )}
 
             {selectedRow && (
-              <PrimaryButton>Cancel Clearance Request</PrimaryButton>
+              <PrimaryButton onClick={cancelClearance(selectedRow)}>Cancel Clearance Request</PrimaryButton>
             )}
             {!selectedRow && (
               <PrimaryButton active={false}>Cancel Clearance Request</PrimaryButton>
