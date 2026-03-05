@@ -134,6 +134,7 @@ const ClientDashboard = () => {
           <Link href="/form">
             <PrimaryButton>New Clearance Request</PrimaryButton>
           </Link>
+
           {selectedRow && (
             <Link href="/form">
               <PrimaryButton>Edit Clearance Request</PrimaryButton>
@@ -142,7 +143,19 @@ const ClientDashboard = () => {
           {!selectedRow && (
             <PrimaryButton active={false}>Edit Clearance Request</PrimaryButton>
           )}
+
+          {selectedRow && (
+            <Link href="/form">
+              <PrimaryButton>Cancel Clearance Request</PrimaryButton>
+            </Link>
+          )}
+          {!selectedRow && (
+            <PrimaryButton active={false}>Cancel Clearance Request</PrimaryButton>
+          )}
+
           <h2 className="text-xl">Sort By</h2>
+          <h2 className="text-xl">Search</h2>
+          <h2 className="text-xl">Filter</h2>
         </div>
       </div>
     </div>
