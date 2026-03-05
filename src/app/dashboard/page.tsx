@@ -136,7 +136,7 @@ const ClientDashboard = () => {
           </Link>
 
           {selectedRow && (
-            <Link href="/form">
+            <Link href={`/form?editing=${selectedRow.clearanceId}`}>
               <PrimaryButton>Edit Clearance Request</PrimaryButton>
             </Link>
           )}
@@ -145,9 +145,7 @@ const ClientDashboard = () => {
           )}
 
           {selectedRow && (
-            <Link href="/form">
-              <PrimaryButton>Cancel Clearance Request</PrimaryButton>
-            </Link>
+            <PrimaryButton>Cancel Clearance Request</PrimaryButton>
           )}
           {!selectedRow && (
             <PrimaryButton active={false}>Cancel Clearance Request</PrimaryButton>
