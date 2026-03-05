@@ -5,7 +5,7 @@ export interface Clearance {
     academicYear: string;
     semester: string;
     status: string;
-    createAt: string;
+    createdAt: string;
     deletedAt?: string;
 }
 
