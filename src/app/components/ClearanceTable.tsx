@@ -4,7 +4,7 @@ import Cell from './Cell'
 
 const ClearanceTable = ({children}: any) => {
   return (
-    <table className="bg-background-card w-full my-4">
+    <table className="bg-background-card w-full">
       <thead>
           <tr className="bg-primary-hover text-background-main">
             <Cell>ID</Cell>
