@@ -16,14 +16,14 @@ const ClearanceTable = ({children}: any) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          {/* <tr>
             <Cell>0</Cell>
             <Cell>Test</Cell>
             <Cell>AY2526</Cell>
             <Cell>3rd Term</Cell>
             <Cell>January 1, 2000</Cell>
             <Cell>Testing</Cell>
-          </tr>
+          </tr> */}
           {children}
         </tbody>
     </table>
