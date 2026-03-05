@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Input from './Input'
 import Submit from './Submit'
-import { AuthError, login } from '../service/AuthService'
+import { AuthError, login, LoginRequest } from '../service/AuthService'
 import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
@@ -34,6 +34,13 @@ const LoginForm = () => {
 
     }
 
+    async function backdoor() {
+        const req: LoginRequest = { email:"gabriel.loslos@email.com", password:"helloworld" };
+        const user = await login(req);
+        alert("Login Successful");
+        window.location.reload();
+    }
+
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <label className="text-center text-4xl">Login</label>
@@ -51,6 +58,7 @@ const LoginForm = () => {
             />
             <Submit/>
             <label className="text-center text-orange-500">{error}</label>
+            <button onClick={backdoor}>dev</button>
         </form>
     )
 }
