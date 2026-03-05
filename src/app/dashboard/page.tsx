@@ -21,8 +21,11 @@ const ClientDashboard = () => {
   const [searchValue, setSearchValue] = useState<string | null>(null);
   const [sortByField, setSortByField] = useState<string | null>(null);
 
+  const uncancellableStatus = [
+    "CANCELLED", "COMPLETED", "REJECTED"
+  ];
+
   useEffect(() => {
-    
     me().then(
       user => {
         getAllStudentClearance(user.userId).then(list => {
@@ -34,7 +37,7 @@ const ClientDashboard = () => {
             case "purpose": list.sort((a,b) => a.purpose.localeCompare(b.purpose));break;
             case "academicYear": list.sort((a,b) => a.academicYear.localeCompare(b.academicYear));break;
             case "semester": list.sort((a,b) => a.semester.localeCompare(b.semester));break;
-            case "createdAt": list.sort((a,b) => a.createdAt.localeCompare(b.createdAt));break;
+            case "date": list.sort((a,b) => a.createdAt.localeCompare(b.createdAt));break;
             case "status": list.sort((a,b) => a.status.localeCompare(b.status));break;
             default: list.sort((a,b) => a.clearanceId - b.clearanceId);break;
           }
@@ -51,11 +54,12 @@ const ClientDashboard = () => {
       selectedRow.status = "CANCELLED";
       const newClearance: ClearanceUdpateRequest = {
         clearanceId: selectedRow.clearanceId,
+        purpose: selectedRow.purpose,
         academicYear: selectedRow.academicYear,
         semester: selectedRow.semester,
         status: selectedRow.status
       };
-      updateClearance(newClearance).then();
+      updateClearance(newClearance).then(() => setSelectedRow(null));
     }
   }
 
@@ -92,25 +96,26 @@ const ClientDashboard = () => {
         </div>
         <div className="flex flex-col gap-4 flex-1 bg-background-card p-4 shadow-xl rounded-xl">
           <div className="flex flex-col gap-2">
+
             <Link href="/form">
               <PrimaryButton>New Clearance Request</PrimaryButton>
             </Link>
 
-            {selectedRow && (
-              <Link href={`/form?editing=${selectedRow.clearanceId}`}>
-                <PrimaryButton>Edit Clearance Request</PrimaryButton>
-              </Link>
-            )}
-            {!selectedRow && (
-              <PrimaryButton active={false}>Edit Clearance Request</PrimaryButton>
-            )}
-
-            {selectedRow && (
-              <PrimaryButton onClick={cancelClearance(selectedRow)}>Cancel Clearance Request</PrimaryButton>
-            )}
-            {!selectedRow && (
-              <PrimaryButton active={false}>Cancel Clearance Request</PrimaryButton>
-            )}
+            <PrimaryButton
+              active={!!selectedRow}
+              as={selectedRow ? Link : undefined}
+              href={selectedRow ? `/form?editing=${selectedRow.clearanceId}` : undefined}
+            >
+              Edit Clearance Request
+            </PrimaryButton>
+            
+            <PrimaryButton
+              active={!!selectedRow && !uncancellableStatus.some(status => status === selectedRow.status)}
+              as={selectedRow ? Link : undefined}
+              onClick={() => cancelClearance(selectedRow!)}
+            >
+              Cancel Clearance Request
+            </PrimaryButton>
           </div>
 
           <div className="flex flex-col">
@@ -130,7 +135,7 @@ const ClientDashboard = () => {
               <option value="purpose">Purpose</option>
               <option value="academicYear">Academic Year</option>
               <option value="semester">Semester</option>
-              <option value="createdAt">Created At</option>
+              <option value="date">Date</option>
               <option value="status">Status</option>
             </Select>
           </div>

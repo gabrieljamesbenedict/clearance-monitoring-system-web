@@ -11,6 +11,7 @@ export interface Clearance {
 
 export interface ClearanceUdpateRequest {
     clearanceId: number;
+    purpose: string;
     academicYear: string;
     semester: string;
     status: string;
