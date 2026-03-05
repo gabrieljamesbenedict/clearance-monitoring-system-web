@@ -1,5 +1,6 @@
 import React from 'react'
 import Cell from './Cell'
+import StatusText from './StatusText';
 
 const ClearanceTableRow = ({onClick, id, purpose, academicYear, semester, createdAt, status, selected}: any) => {
   const trStyle = (selected ? "bg-red-200 " : "hover:bg-gray-200 ") + "cursor-pointer";
@@ -13,7 +14,7 @@ const ClearanceTableRow = ({onClick, id, purpose, academicYear, semester, create
         <Cell>{academicYear}</Cell>
         <Cell>{semester}</Cell>
         <Cell>{createdAt}</Cell>
-        <Cell>{status}</Cell>
+        <Cell><StatusText>{status}</StatusText></Cell>
     </tr>
   )
 }
