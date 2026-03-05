@@ -6,7 +6,7 @@ const ClearanceTable = ({children}: any) => {
   return (
     <table className="bg-background-card w-full">
       <thead>
-          <tr className="bg-primary-hover text-background-main">
+          <tr className="bg-primary-hover text-white">
             <Cell>ID</Cell>
             <Cell>Purpose</Cell>
             <Cell>Academic Year</Cell>

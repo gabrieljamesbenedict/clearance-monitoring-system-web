@@ -1,9 +1,13 @@
 import React from 'react'
 import Cell from './Cell'
 
-const ClearanceTableRow = ({id, purpose, academicYear, semester, createdAt, status}: any) => {
+const ClearanceTableRow = ({onClick, id, purpose, academicYear, semester, createdAt, status, selected}: any) => {
+  const trStyle = (selected ? "bg-red-200 " : "hover:bg-gray-200 ") + "cursor-pointer";
   return (
-    <tr>
+    <tr
+    className={trStyle}
+    onClick={onClick}
+    >
         <Cell>{id}</Cell>
         <Cell>{purpose}</Cell>
         <Cell>{academicYear}</Cell>

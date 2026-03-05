@@ -96,7 +96,7 @@ export const fakeClearances: Clearance[] = [
 
 const ClientDashboard = () => {
 
-  const [user, setUser] = useState<User | null>(null);
+  const [selectedRow, setSelectedRow] = useState<Clearance | null>(null);
 
   return (
     <div className="flex flex-col gap-4 px-12 py-4">
@@ -107,10 +107,18 @@ const ClientDashboard = () => {
       <div className="flex justify-between gap-4">
         <div className="flex-4 shadow-xl rounded-xl overflow-hidden">
           <ClearanceTable>
-            <ClearanceTableRow id={0} purpose={"Hello World"} academicYear={"AY2627"} semester={"1st Term"} createdAt={"January 1, 2026"} status={"Pending"} />
+            {/* <ClearanceTableRow  id={0} purpose={"Hello World"} academicYear={"AY2627"} semester={"1st Term"} createdAt={"January 1, 2026"} status={"Pending"}/> */}
             {
               fakeClearances.map(c => (
                 <ClearanceTableRow
+                onClick={() => {
+                  if (selectedRow === c) {
+                    setSelectedRow(null)
+                  } else {
+                    setSelectedRow(c)
+                  }
+                }}
+                selected={(selectedRow === c)}
                 key={c.clearanceId}
                 id={c.clearanceId}
                 purpose={c.purpose}
@@ -122,10 +130,19 @@ const ClientDashboard = () => {
             }
           </ClearanceTable>
         </div>
-        <div className="flex-1 bg-background-card p-4 shadow-xl rounded-xl">
+        <div className="flex flex-col gap-4 flex-1 bg-background-card p-4 shadow-xl rounded-xl">
           <Link href="/form">
             <PrimaryButton>New Clearance Request</PrimaryButton>
           </Link>
+          {selectedRow && (
+            <Link href="/form">
+              <PrimaryButton>Edit Clearance Request</PrimaryButton>
+            </Link>
+          )}
+          {!selectedRow && (
+            <PrimaryButton active={false}>Edit Clearance Request</PrimaryButton>
+          )}
+          <h2 className="text-xl">Sort By</h2>
         </div>
       </div>
     </div>

@@ -1,8 +1,9 @@
 import React from 'react'
 
-const PrimaryButton = ({children}: any) => {
+const PrimaryButton = ({children, active = true}: any) => {
+  const styling = (active ? "bg-primary-hover hover:-translate-y-1 transition cursor-pointer " : "bg-gray-400 ") + "text-white text-center px-6 py-3 rounded-2xl";
   return (
-    <div className="bg-primary-hover text-white text-center px-6 py-3 rounded-2xl hover:-translate-y-1 transition cursor-pointer">
+    <div className={styling}>
         {children}
     </div>
   )
