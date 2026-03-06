@@ -4,19 +4,52 @@ import React, { useState } from 'react'
 import Input from './Input';
 import Select from './Select';
 import Submit from './Submit';
-import { ClearanceCreationRequest, createClearance } from '../service/ClearanceService';
+import { ClearanceCreationRequest, ClearanceUdpateRequest, createClearance, getStudentClearance } from '../service/ClearanceService';
 import { me } from '../service/AuthService';
 import InputRowContainer from './InputRowContainer';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from "next/navigation";
 
 const ClearanceForm = () => {
-
+    
     const router = useRouter();
 
     const [chosenPurpose, setChosenPurpose] = useState<string>("")
     const [otherPurpose, setOtherPurpose] =   useState<string>("")
     const [academicYear, setAcademicYear] =   useState<string>("")
     const [semester, setSemester] =   useState<string>("")
+
+    const clearance: ClearanceUdpateRequest = {
+        clearanceId: 0,
+        purpose: '',
+        academicYear: '',
+        semester: '',
+        status: ''
+    }
+
+    const searchParams = useSearchParams();
+    const editing = searchParams.get("editing");
+    const PURPOSE_VALUES = ["Drop", "Transfer", "TOR", "Diploma", "Cancellation"];
+
+    if (editing) {
+        // callback hell :(
+        const clearanceId = parseInt(editing);
+        me().then(u => {
+            const studentId = u.userId;
+            getStudentClearance(studentId, clearanceId).then(c => {
+                if (PURPOSE_VALUES.includes(c.purpose)) {
+                    setChosenPurpose(c.purpose);
+                } else {
+                    setChosenPurpose("Others");
+                    setOtherPurpose(c.purpose);
+                }
+                setAcademicYear(c.academicYear);
+                setSemester(c.semester);
+            });
+        });
+
+    }
+
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
@@ -49,14 +82,14 @@ const ClearanceForm = () => {
                     setChosenPurpose(String(value));
                 }}
             >
-                <option value="drop">Drop</option>
-                <option value="transfer">Transfer</option>
-                <option value="tor">TOR</option>
-                <option value="diploma">Diploma</option>
-                <option value="cancellation">Cancellation</option>
-                <option value="others">Others</option>
+                {
+                    PURPOSE_VALUES.map(v => {
+                        return (<option key={v} value={v}>{v}</option>)
+                    })
+                }
+                <option value="Others">Others</option>
             </Select>
-            {chosenPurpose === "others" &&(
+            {chosenPurpose === "Others" &&(
                 <Input
                     type="text"
                     placeholder="Others"
@@ -85,10 +118,10 @@ const ClearanceForm = () => {
                         setSemester(String(value));
                     }}
                 >
-                    <option value="AY2324">1st Term</option>
-                    <option value="AY2425">2nd Term</option>
-                    <option value="AY2526">3rd Term</option>
-                    <option value="AY2526">4th Term</option>
+                    <option value="1st Term">1st Term</option>
+                    <option value="2nd Term">2nd Term</option>
+                    <option value="3rd Term">3rd Term</option>
+                    <option value="4th Term">4th Term</option>
                 </Select>
             </InputRowContainer>
             <Submit/>

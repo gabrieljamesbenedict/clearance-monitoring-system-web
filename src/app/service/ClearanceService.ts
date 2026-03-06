@@ -1,3 +1,5 @@
+import { me } from "./AuthService";
+
 export interface Clearance {
     clearanceId: number;
     userId?: number;
@@ -39,8 +41,8 @@ export const getAllStudentClearance = async (id: number): Promise<Clearance[]> =
     return await res.json();
 }
 
-export const getStudentClearance = async (id: number): Promise<Clearance> => {
-    const res = await fetch(`http://localhost:8080/api/clearances/${id}`, {
+export const getStudentClearance = async (studentId: number, clearanceId: number): Promise<Clearance> => {
+    const res = await fetch(`http://localhost:8080/api/clearances/${clearanceId}?studentId=${studentId}`, {
         method: "GET",
         credentials: "include",
         headers: {"Content-Type": "application/json"}
