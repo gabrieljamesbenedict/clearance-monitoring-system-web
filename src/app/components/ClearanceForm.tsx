@@ -4,11 +4,14 @@ import React, { useState } from 'react'
 import Input from './Input';
 import Select from './Select';
 import Submit from './Submit';
-import { ClearanceCreationRequest } from '../service/ClearanceService';
+import { ClearanceCreationRequest, createClearance } from '../service/ClearanceService';
 import { me } from '../service/AuthService';
 import InputRowContainer from './InputRowContainer';
+import { useRouter } from 'next/navigation';
 
 const ClearanceForm = () => {
+
+    const router = useRouter();
 
     const [chosenPurpose, setChosenPurpose] = useState<string>("")
     const [otherPurpose, setOtherPurpose] =   useState<string>("")
@@ -28,6 +31,11 @@ const ClearanceForm = () => {
                 academicYear: academicYear,
                 semester: semester
             }
+
+            createClearance(clearance).then(() => {
+                alert("Successfully submitted your clearance request");
+                router.push("/dashboard");
+            });
         }
     }
 
