@@ -1,10 +1,10 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Input from './Input';
 import Select from './Select';
 import Submit from './Submit';
-import { ClearanceCreationRequest, ClearanceUdpateRequest, createClearance, getStudentClearance } from '../service/ClearanceService';
+import { ClearanceCreationRequest, ClearanceUdpateRequest, createClearance, getStudentClearance, updateClearance } from '../service/ClearanceService';
 import { me } from '../service/AuthService';
 import InputRowContainer from './InputRowContainer';
 import { useRouter } from 'next/navigation';
@@ -19,54 +19,71 @@ const ClearanceForm = () => {
     const [academicYear, setAcademicYear] =   useState<string>("")
     const [semester, setSemester] =   useState<string>("")
 
-    const clearance: ClearanceUdpateRequest = {
-        clearanceId: 0,
-        purpose: '',
-        academicYear: '',
-        semester: '',
-        status: ''
-    }
-
     const searchParams = useSearchParams();
     const editing = searchParams.get("editing");
     const PURPOSE_VALUES = ["Drop", "Transfer", "TOR", "Diploma", "Cancellation"];
 
-    if (editing) {
-        // callback hell :(
-        const clearanceId = parseInt(editing);
-        me().then(u => {
-            const studentId = u.userId;
-            getStudentClearance(studentId, clearanceId).then(c => {
-                if (PURPOSE_VALUES.includes(c.purpose)) {
-                    setChosenPurpose(c.purpose);
-                } else {
-                    setChosenPurpose("Others");
-                    setOtherPurpose(c.purpose);
-                }
-                setAcademicYear(c.academicYear);
-                setSemester(c.semester);
+    useEffect(() => {
+        if (editing) {
+            // callback hell :(
+            const clearanceId = parseInt(editing);
+            me().then(u => {
+                const studentId = u.userId;
+                getStudentClearance(studentId, clearanceId).then(c => {
+                    if (PURPOSE_VALUES.includes(c.purpose)) {
+                        setChosenPurpose(c.purpose);
+                    } else {
+                        setChosenPurpose("Others");
+                        setOtherPurpose(c.purpose);
+                    }
+                    setAcademicYear(c.academicYear);
+                    setSemester(c.semester);
+                });
             });
-        });
-
-    }
+        }
+    },[]);
 
 
     async function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
 
+        if (editing) {
+            handleSubmitEdit()
+        } else {
+            const purpose = (chosenPurpose === "others") ? otherPurpose : chosenPurpose;
+            const confirmation = confirm("Are you sure you want to request a clearance for " + purpose.toUpperCase());
+
+            if (confirmation) {
+                const clearance: ClearanceCreationRequest = {
+                    studentId: (await me()).userId,
+                    purpose: purpose,
+                    academicYear: academicYear,
+                    semester: semester
+                }
+
+                createClearance(clearance).then(() => {
+                    alert("Successfully submitted your clearance request");
+                    router.push("/dashboard");
+                });
+            }
+        }
+    }    
+
+    async function handleSubmitEdit() {
         const purpose = (chosenPurpose === "others") ? otherPurpose : chosenPurpose;
-        const confirmation = confirm("Are you sure you want to request a clearance for " + purpose.toUpperCase());
+        const confirmation = confirm("Are you sure you want to edit your clearance request?");
 
         if (confirmation) {
-            const clearance: ClearanceCreationRequest = {
-                studentId: (await me()).userId,
+            const clearance: ClearanceUdpateRequest = {
+                clearanceId: parseInt(editing!),
                 purpose: purpose,
                 academicYear: academicYear,
-                semester: semester
+                semester: semester,
+                status: "PENDING"
             }
 
-            createClearance(clearance).then(() => {
-                alert("Successfully submitted your clearance request");
+            updateClearance(clearance).then(() => {
+                alert("Successfully updated your clearance request");
                 router.push("/dashboard");
             });
         }
@@ -105,11 +122,12 @@ const ClearanceForm = () => {
                         setAcademicYear(String(value));
                     }}
                 >
+                    <option value="AY2021">AY2021</option>
+                    <option value="AY2122">AY2122</option>
+                    <option value="AY2223">AY2223</option>
                     <option value="AY2324">AY2324</option>
                     <option value="AY2425">AY2425</option>
                     <option value="AY2526">AY2526</option>
-                    <option value="AY2627">AY2627</option>
-                    <option value="AY2728">AY2728</option>
                 </Select>
                 <Select placeholder={"Select the Semester"}
                     value={semester}
