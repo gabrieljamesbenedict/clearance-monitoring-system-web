@@ -1,4 +1,4 @@
-export type Role = 'STUDENT' | 'EMPLOYEE';
+export type Role = 'ROLE_STUDENT' | 'ROLE_EMPLOYEE';
 
 export interface User {
   userId: number;
@@ -60,17 +60,14 @@ export const login = async (request: LoginRequest) => {
         body: formBody.toString()
     });
 
-    const data = await res.json();
-
-    if (res.ok) {
-        return data;
+    if (!res.ok) {
+        if (res.status === 401) {
+            throw new AuthError("Invalid Email or Password");
+        }
+        throw new Error(`Server Error: ${res.status}`);
     }
 
-    if (res.status >= 500 && res.status < 600) {
-        throw new Error("Internal Server Error");
-    }
-
-    throw new AuthError(data.message);
+    return await res.json();
 }
 
 export const logout = async () => {

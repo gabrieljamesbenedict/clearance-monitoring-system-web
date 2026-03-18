@@ -18,8 +18,8 @@ const ClientDashboard = () => {
   const [selectedRow, setSelectedRow] = useState<Clearance | null>(null);
   const [clearanceList, setClearanceList] = useState<Clearance[]>([]);
 
-  const [searchValue, setSearchValue] = useState<string | null>(null);
-  const [sortByField, setSortByField] = useState<string | null>(null);
+  const [searchValue, setSearchValue] = useState<string>("");
+  const [sortByField, setSortByField] = useState<string>("");
 
   const uncancellableStatus = [
     "CANCELLED", "COMPLETED", "REJECTED"
@@ -30,6 +30,7 @@ const ClientDashboard = () => {
   useEffect(() => {
     me().then(
       user => {
+        setUser(user);
         getAllStudentClearance(user.userId).then(list => {
           list = 
             searchValue ? 
@@ -130,7 +131,7 @@ const ClientDashboard = () => {
               value={sortByField}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                   const value = e.target.value;
-                  setSortByField(value ? String(value) : null);
+                  setSortByField(value);
               }}
             >
               <option value="purpose">Purpose</option>
