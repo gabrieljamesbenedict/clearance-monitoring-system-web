@@ -50,7 +50,7 @@ const ClearanceForm = () => {
         if (editing) {
             handleSubmitEdit()
         } else {
-            const purpose = (chosenPurpose === "others") ? otherPurpose : chosenPurpose;
+            const purpose = (chosenPurpose === "Others") ? otherPurpose : chosenPurpose;
             const confirmation = confirm("Are you sure you want to request a clearance for " + purpose.toUpperCase());
 
             if (confirmation) {
@@ -70,7 +70,7 @@ const ClearanceForm = () => {
     }    
 
     async function handleSubmitEdit() {
-        const purpose = (chosenPurpose === "others") ? otherPurpose : chosenPurpose;
+        const purpose = (chosenPurpose === "Others") ? otherPurpose : chosenPurpose;
         const confirmation = confirm("Are you sure you want to edit your clearance request?");
 
         if (confirmation) {

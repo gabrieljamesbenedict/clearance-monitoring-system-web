@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Input from './Input'
 import Submit from './Submit'
-import { AuthError, login, LoginRequest } from '../service/AuthService'
+import { AuthError, login, me, LoginRequest } from '../service/AuthService'
 import { useRouter } from 'next/navigation';
 
 const LoginForm = () => {
@@ -15,31 +15,28 @@ const LoginForm = () => {
 
     const router = useRouter();
 
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-
-        try {
-            setError(null);
-            const user = await login({ email, password });
-            alert("Login Successful");
-            window.location.reload();
-        } catch (err: unknown) {
-            if (err instanceof AuthError) {
-                setError(err.message);
-                return;
-            }
-            setError("Unexpected error occurred");
-            console.error("Unknown error type:", err);
+async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+        setError(null);
+        await login({ email, password });
+        const user = await me();
+        router.push(user.role === "ROLE_EMPLOYEE" ? "/admin" : "/dashboard");
+    } catch (err: unknown) {
+        if (err instanceof AuthError) {
+            setError(err.message);
+            return;
         }
-
+        setError("Unexpected error occurred");
+        console.error("Unknown error type:", err);
     }
+}
 
-    async function backdoor() {
-        const req: LoginRequest = { email:"gabriel.loslos@email.com", password:"helloworld" };
-        const user = await login(req);
-        alert("Login Successful");
-        window.location.reload();
-    }
+async function backdoor() {
+    await login({ email: "gabriel.loslos@email.com", password: "helloworld" });
+    const user = await me();
+    router.push(user.role === "ROLE_EMPLOYEE" ? "/admin" : "/dashboard");
+}
 
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">

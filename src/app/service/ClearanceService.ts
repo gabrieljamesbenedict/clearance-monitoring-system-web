@@ -80,3 +80,30 @@ export const updateClearance = async (clearance: ClearanceUdpateRequest) => {
         throw new Error(`Request failed: ${res.status}`);
     }
 }
+
+export interface ClearanceAdmin {
+    clearanceId: number;
+    studentName: string;
+    studentNumber: string;
+    schoolName: string;
+    programName: string;
+    purpose: string;
+    academicYear: string;
+    semester: string;
+    status: string;
+    createdAt: string;
+}
+
+export const getAllClearances = async (): Promise<ClearanceAdmin[]> => {
+    const res = await fetch(`http://localhost:8080/api/clearances/all`, {
+        method: "GET",
+        credentials: "include",
+        headers: {"Content-Type": "application/json"}
+    });
+
+    if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`);
+    }
+
+    return await res.json();
+}
